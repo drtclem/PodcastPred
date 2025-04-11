@@ -1,4 +1,4 @@
-def preprocess_test_data(df_test, scaler, features_used):
+def preprocess_test_data(df_test, scaler, features_used, features_scaled):
     import numpy as np
     import pandas as pd
 
@@ -43,9 +43,7 @@ def preprocess_test_data(df_test, scaler, features_used):
         df['Guest_Popularity_percentage'] = df['Guest_Popularity_percentage'].fillna(0)
 
     # --- Standardize numeric features using the provided scaler ---
-    numeric_cols = df.select_dtypes(include=['float64', 'int64']).columns
-    cols_to_scale = [col for col in numeric_cols if col in features_used]
-    df[cols_to_scale] = scaler.transform(df[cols_to_scale])
+    df[features_scaled] = scaler.transform(df[features_scaled])
 
     # --- Ensure all expected columns are present ---
     for col in features_used:
