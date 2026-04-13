@@ -1,49 +1,58 @@
-# 4Geeks data science project boilerplate
+# Podcast Listening Time Predictor
 
-Minimal Python 3.11 repository for 4Geeks data science assignments. Several useful Python packages and VSCode extensions are installed on Codespace boot-up. Directories for models and data are created within the Codespace but excluded from tracking.
+A regression pipeline for predicting podcast episode listening time, built end-to-end in Python using a 750,000-record dataset.
 
-## 1. Set-up
+## Overview
 
-Fork this repository by clicking the *Fork* button at the upper right. Make sure to set 4Geeks as the owner of the new fork - this way 4Geeks pays for your codespace usage. Then start a Codespace on your fork by clicking the green *Code* button and then '**+**' icon under Codespaces in the drop-down menu.
+This project walks through a full supervised learning workflow — from raw data ingestion and feature engineering through EDA, baseline modeling, regularization, and hyperparameter tuning — with the goal of predicting how long a listener will engage with a podcast episode.
 
-## 2. Environment
+See [`final.ipynb`](./final.ipynb) for the full walkthrough and all project work.
 
-### 2.1. Repository structure
+## Dataset
 
-```text
-.
-├──.devcontainer
-│   └── devcontainer.json
-│
-├── src
-│   └── project.ipynb
-│
-├── .gitignore
-├── LICENSE
-├── README.md
-└── requirements.txt
-```
+750,000 training records with the following features:
 
-### 2.2. Python
-**Base image**: [Python 3.11](https://github.com/devcontainers/images/tree/main/src/python)
+- `Podcast_Name`, `Episode_Title`, `Genre`
+- `Episode_Length_minutes`
+- `Host_Popularity_percentage`, `Guest_Popularity_percentage`
+- `Publication_Day`, `Publication_Time`
+- `Number_of_Ads`, `Episode_Sentiment`
+- **Target:** `Listening_Time_minutes`
 
-Packages installed via `requirements.txt`:
+## Workflow
 
-1. [numpy 2.2.3](https://numpy.org/doc/stable/index.html)
-2. [pandas 2.2.3](https://pandas.pydata.org/docs/)
-3. [scikit-learn 1.6.1](https://scikit-learn.org/stable/index.html)
-4. [matplotlib 3.10.1](https://matplotlib.org/stable/index.html)
-5. [seaborn 0.13.2](https://seaborn.pydata.org/)
-6. [ipykernel 6.29.5](https://pypi.org/project/ipykernel/)
+**1. Data Preparation**
+- Load train/test CSVs and inspect structure
+- Encode categorical variables (genre dummies, sentiment mapping)
+- Engineer cyclical time features (sin/cos encoding for day and time of day)
+- Handle missing values and drop low-signal columns
 
-If you need to install additional Python packages, you can do so via the terminal with: `pip install packagename`.
+**2. Exploratory Data Analysis**
+- Distribution plots for key numeric features
+- Correlation heatmap against target variable
+- Listening time by genre, sentiment, host/guest popularity, and time of day
 
-### 2.3. VSCode extensions
+**3. Modeling**
+- Baseline Linear Regression
+- Ridge and Lasso regularization with GridSearchCV tuning
+- Random Forest Regressor
+- XGBoost with GridSearchCV and RandomizedSearchCV hyperparameter tuning
+- Final model evaluation: RMSE and R²
+- Actual vs. predicted scatter plot
 
-Sepcified via `devcontainier.json`.
+## Tech Stack
 
-1. [ms-python.python](https://marketplace.visualstudio.com/items?itemName=ms-python.python)
-2. [ms-toolsai.jupyter](https://marketplace.visualstudio.com/items?itemName=ms-toolsai.jupyter)
-3. [streetsidesoftware.code-spell-checker](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
+- Python
+- Scikit-learn
+- XGBoost
+- NumPy, Pandas
+- Matplotlib, Seaborn
+- Joblib (model persistence)
 
-VSCode extensions can be added via the *Extensions* tab located on the activities panel at the left once inside the Codespace.
+## Results
+
+Iterative model development from baseline linear regression through tuned XGBoost, with cross-validated RMSE and R² tracked at each stage.
+
+## Author
+
+Taylor Clements, PhD
